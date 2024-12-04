@@ -260,8 +260,8 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
     graph.addEdge(node7, node4, showArrow: false);
 
     builder
-      ..nodeSeparation = (100)
-      ..levelSeparation = (100)
+      ..nodeSeparation = (60)
+      ..levelSeparation = (60)
       ..orientation = SugiyamaConfiguration.ORIENTATION_TOP_BOTTOM;
   }
 }

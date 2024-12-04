@@ -5,16 +5,17 @@ class SugiyamaEdgeRenderer extends ArrowEdgeRenderer {
   Map<Edge, SugiyamaEdgeData> edgeData;
   BendPointShape bendPointShape;
   bool addTriangleToEdge;
+  SugiyamaConfiguration configuration;
 
   SugiyamaEdgeRenderer(this.nodeData, this.edgeData, this.bendPointShape,
-      this.addTriangleToEdge);
+      this.addTriangleToEdge, this.configuration);
 
   var path = Path();
 
   @override
   void render(Canvas canvas, Graph graph, Paint paint) {
-    var levelSeparationHalf = 100 / 2;
-    var arrowSize = 6.0; // 箭头大小
+    var levelSeparationHalf = configuration.levelSeparation / 2;
+    var arrowSize = 5.0; // 箭头大小
 
     graph.nodes.forEach((node) {
       var children = graph.successorsOf(node);
