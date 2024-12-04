@@ -91,8 +91,8 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
               child: InteractiveViewer(
                   constrained: false,
                   boundaryMargin: EdgeInsets.all(100),
-                  minScale: 1,
-                  maxScale: 10.6,
+                  minScale: 0.01,
+                  maxScale: 5.6,
                   child: GraphView(
                     graph: graph,
                     algorithm: SugiyamaAlgorithm(builder),
@@ -149,9 +149,10 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
       );
     }
 
-    return GestureDetector(onTap:(){
-        print('tapped' + a.toString());
-    },
+    return GestureDetector(
+        onTap: () {
+          print('tapped' + a.toString());
+        },
         child: Container(
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
