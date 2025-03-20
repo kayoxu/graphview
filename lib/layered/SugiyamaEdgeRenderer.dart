@@ -75,7 +75,7 @@ class SugiyamaEdgeRenderer extends ArrowEdgeRenderer {
   }
 
   /// 绘制箭头
-  void _drawArrow(Canvas canvas, Offset start, Offset end, Color color,
+   void _drawArrow(Canvas canvas, Offset start, Offset end, Color color,
       double size) {
     var paint = Paint()
       ..color = color
@@ -84,25 +84,25 @@ class SugiyamaEdgeRenderer extends ArrowEdgeRenderer {
     // 箭头方向
     var angle = atan2(end.dy - start.dy, end.dx - start.dx);
 
-    // 箭头的两个边点
+    // 箭头的两个边点，size 增大一倍
     var arrowLeft = Offset(
-      end.dx - size * cos(angle - pi / 6),
-      end.dy - size * sin(angle - pi / 6),
+      end.dx - 2 * size * cos(angle - pi / 6),
+      end.dy - 2 * size * sin(angle - pi / 6),
     );
     var arrowRight = Offset(
-      end.dx - size * cos(angle + pi / 6),
-      end.dy - size * sin(angle + pi / 6),
+      end.dx - 2 * size * cos(angle + pi / 6),
+      end.dy - 2 * size * sin(angle + pi / 6),
     );
 
     // 绘制三角形
     var path = Path()
       ..moveTo(end.dx, end.dy) // 箭头顶点
-      ..lineTo(arrowLeft.dx, arrowLeft.dy)..lineTo(arrowRight.dx, arrowRight.dy)
+      ..lineTo(arrowLeft.dx, arrowLeft.dy)
+      ..lineTo(arrowRight.dx, arrowRight.dy)
       ..close();
 
     canvas.drawPath(path, paint);
   }
-
   void _drawSharpBendPointsEdge(List<Offset> bendPoints) {
     for (var i = 1; i < bendPoints.length - 1; i++) {
       path.lineTo(bendPoints[i].dx, bendPoints[i].dy);
