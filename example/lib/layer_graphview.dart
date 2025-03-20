@@ -187,8 +187,8 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
     super.initState();
     // _dddd();
     builder
-      ..nodeSeparation = (60)
-      ..levelSeparation = (60)
+      ..nodeSeparation = (10)
+      ..levelSeparation = (50)
       ..orientation = SugiyamaConfiguration.ORIENTATION_TOP_BOTTOM;
   }
 
