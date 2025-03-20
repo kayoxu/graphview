@@ -22,12 +22,13 @@ class SugiyamaEdgeRenderer extends ArrowEdgeRenderer {
 
       children.forEach((child) {
         var edge = graph.getEdgeBetween(node, child);
-        var edgePaint = (edge?.paint ?? paint)..style = PaintingStyle.stroke;
+        var edgePaint = (edge?.paint ?? paint)
+          ..style = PaintingStyle.stroke;
         path.reset();
 
         // Position at the middle-top of the child
         path.moveTo((child.x + child.width / 2), child.y);
-        // // Draws a line from the child's middle-top halfway up to its parent
+        // Draws a line from the child's middle-top halfway up to its parent
         path.lineTo(child.x + child.width / 2, child.y - levelSeparationHalf);
 
         // Draws a line from the previous point to the middle of the parent's width
@@ -38,12 +39,34 @@ class SugiyamaEdgeRenderer extends ArrowEdgeRenderer {
         path.lineTo(node.x + node.width / 2, node.y + node.height);
 
         // Draw the path
-        canvas.drawPath(path, edgePaint);
+        if (edge?.dash ?? false) {
+          // Draw dashed line
+          edgePaint.style = PaintingStyle.stroke;
+          final dashPaint = Paint()
+            ..color = edgePaint.color
+            ..strokeWidth = edgePaint.strokeWidth
+            ..style = PaintingStyle.stroke;
+
+          // Define dash pattern (e.g., 10 pixels on, 5 pixels off)
+          const dashLength = 3.0;
+          const dashSpace = 3.0;
+
+          canvas.drawPath(
+            dashPath(
+              path,
+              dashArray: CircularIntervalList<double>([dashLength, dashSpace]),
+            ),
+            dashPaint,
+          );
+        } else {
+          // Draw solid line
+          canvas.drawPath(path, edgePaint);
+        }
 
         if (edge?.showArrow ?? true) {
           // Add arrow at the end of the line
           var arrowStart =
-              Offset(child.x + child.width / 2, child.y - levelSeparationHalf);
+          Offset(child.x + child.width / 2, child.y - levelSeparationHalf);
           var arrowEnd = Offset(child.x + child.width / 2, child.y);
           _drawArrow(canvas, arrowStart, arrowEnd, edgePaint.color, arrowSize);
         }
@@ -52,8 +75,8 @@ class SugiyamaEdgeRenderer extends ArrowEdgeRenderer {
   }
 
   /// 绘制箭头
-  void _drawArrow(
-      Canvas canvas, Offset start, Offset end, Color color, double size) {
+  void _drawArrow(Canvas canvas, Offset start, Offset end, Color color,
+      double size) {
     var paint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;
@@ -74,8 +97,7 @@ class SugiyamaEdgeRenderer extends ArrowEdgeRenderer {
     // 绘制三角形
     var path = Path()
       ..moveTo(end.dx, end.dy) // 箭头顶点
-      ..lineTo(arrowLeft.dx, arrowLeft.dy)
-      ..lineTo(arrowRight.dx, arrowRight.dy)
+      ..lineTo(arrowLeft.dx, arrowLeft.dy)..lineTo(arrowRight.dx, arrowRight.dy)
       ..close();
 
     canvas.drawPath(path, paint);
@@ -106,11 +128,11 @@ class SugiyamaEdgeRenderer extends ArrowEdgeRenderer {
       final afterNextNode = bendPoints[i + 1];
 
       final arcStartPointRadians =
-          atan2(nextNode.dy - currentNode.dy, nextNode.dx - currentNode.dx);
+      atan2(nextNode.dy - currentNode.dy, nextNode.dx - currentNode.dx);
       final arcStartPoint =
           nextNode - Offset.fromDirection(arcStartPointRadians, curveLength);
       final arcEndPointRadians =
-          atan2(nextNode.dy - afterNextNode.dy, nextNode.dx - afterNextNode.dx);
+      atan2(nextNode.dy - afterNextNode.dy, nextNode.dx - afterNextNode.dx);
       final arcEndPoint =
           nextNode - Offset.fromDirection(arcEndPointRadians, curveLength);
 

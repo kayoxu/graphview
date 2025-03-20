@@ -70,7 +70,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
                     var edge =
                         graph.getNodeAtPosition(r.nextInt(graph.nodeCount()));
                     print(edge);
-                    graph.addEdge(edge, node12);
+                    graph.addEdge(edge, node12,dash: true);
                     setState(() {});
                   },
                   child: Text('Add'),

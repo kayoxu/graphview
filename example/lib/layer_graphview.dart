@@ -12,100 +12,112 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          actions: [
+            TextButton(
+                onPressed: () {
+                  setState(() {
+                    _dddd();
+                  });
+                },
+                child: Text('Refresh'))
+          ],
+        ),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Wrap(
-              children: [
-                Container(
-                  width: 100,
-                  child: TextFormField(
-                    initialValue: builder.nodeSeparation.toString(),
-                    decoration: InputDecoration(labelText: 'Node Separation'),
-                    onChanged: (text) {
-                      builder.nodeSeparation = int.tryParse(text) ?? 100;
-                      this.setState(() {});
-                    },
-                  ),
-                ),
-                Container(
-                  width: 100,
-                  child: TextFormField(
-                    initialValue: builder.levelSeparation.toString(),
-                    decoration: InputDecoration(labelText: 'Level Separation'),
-                    onChanged: (text) {
-                      builder.levelSeparation = int.tryParse(text) ?? 100;
-                      this.setState(() {});
-                    },
-                  ),
-                ),
-                Container(
-                  width: 100,
-                  child: TextFormField(
-                    initialValue: builder.orientation.toString(),
-                    decoration: InputDecoration(labelText: 'Orientation'),
-                    onChanged: (text) {
-                      builder.orientation = int.tryParse(text) ?? 100;
-                      this.setState(() {});
-                    },
-                  ),
-                ),
-                Container(
-                  width: 100,
-                  child: Column(
-                    children: [
-                      Text('Alignment'),
-                      DropdownButton<CoordinateAssignment>(
-                        value: builder.coordinateAssignment,
-                        items: CoordinateAssignment.values
-                            .map((coordinateAssignment) {
-                          return DropdownMenuItem<CoordinateAssignment>(
-                            value: coordinateAssignment,
-                            child: Text(coordinateAssignment.name),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            builder.coordinateAssignment = value!;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    final node12 = Node.Id(r.nextInt(100));
-                    var edge =
-                        graph.getNodeAtPosition(r.nextInt(graph.nodeCount()));
-                    print(edge);
-                    graph.addEdge(edge, node12);
-                    setState(() {});
-                  },
-                  child: Text('Add'),
-                )
-              ],
-            ),
+            // Wrap(
+            //   children: [
+            //     Container(
+            //       width: 100,
+            //       child: TextFormField(
+            //         initialValue: builder.nodeSeparation.toString(),
+            //         decoration: InputDecoration(labelText: 'Node Separation'),
+            //         onChanged: (text) {
+            //           builder.nodeSeparation = int.tryParse(text) ?? 100;
+            //           this.setState(() {});
+            //         },
+            //       ),
+            //     ),
+            //     Container(
+            //       width: 100,
+            //       child: TextFormField(
+            //         initialValue: builder.levelSeparation.toString(),
+            //         decoration: InputDecoration(labelText: 'Level Separation'),
+            //         onChanged: (text) {
+            //           builder.levelSeparation = int.tryParse(text) ?? 100;
+            //           this.setState(() {});
+            //         },
+            //       ),
+            //     ),
+            //     Container(
+            //       width: 100,
+            //       child: TextFormField(
+            //         initialValue: builder.orientation.toString(),
+            //         decoration: InputDecoration(labelText: 'Orientation'),
+            //         onChanged: (text) {
+            //           builder.orientation = int.tryParse(text) ?? 100;
+            //           this.setState(() {});
+            //         },
+            //       ),
+            //     ),
+            //     Container(
+            //       width: 100,
+            //       child: Column(
+            //         children: [
+            //           Text('Alignment'),
+            //           DropdownButton<CoordinateAssignment>(
+            //             value: builder.coordinateAssignment,
+            //             items: CoordinateAssignment.values
+            //                 .map((coordinateAssignment) {
+            //               return DropdownMenuItem<CoordinateAssignment>(
+            //                 value: coordinateAssignment,
+            //                 child: Text(coordinateAssignment.name),
+            //               );
+            //             }).toList(),
+            //             onChanged: (value) {
+            //               setState(() {
+            //                 builder.coordinateAssignment = value!;
+            //               });
+            //             },
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //     ElevatedButton(
+            //       onPressed: () {
+            //         final node12 = Node.Id(r.nextInt(100));
+            //         var edge =
+            //             graph.getNodeAtPosition(r.nextInt(graph.nodeCount()));
+            //         print(edge);
+            //         graph.addEdge(edge, node12);
+            //         setState(() {});
+            //       },
+            //       child: Text('Add'),
+            //     )
+            //   ],
+            // ),
             Expanded(
               child: InteractiveViewer(
                   constrained: false,
                   boundaryMargin: EdgeInsets.all(100),
                   minScale: 0.01,
                   maxScale: 5.6,
-                  child: GraphView(
-                    graph: graph,
-                    algorithm: SugiyamaAlgorithm(builder),
-                    paint: Paint()
-                      ..color = Colors.green
-                      ..strokeWidth = 1
-                      ..style = PaintingStyle.stroke,
-                    builder: (Node node) {
-                      // I can decide what widget should be shown here based on the id
-                      var a = node.key!.value as int?;
-                      return rectangleWidget(a);
-                    },
-                  )),
+                  child: graph.nodeCount() == 0
+                      ? Center(child: Text('No nodes'))
+                      : GraphView(
+                          graph: graph,
+                          algorithm: SugiyamaAlgorithm(builder),
+                          paint: Paint()
+                            ..color = Colors.green
+                            ..strokeWidth = 1
+                            ..style = PaintingStyle.stroke,
+                          builder: (Node node) {
+                            // I can decide what widget should be shown here based on the id
+                            var a = node.key!.value as int?;
+                            return rectangleWidget(a);
+                          },
+                        )),
             ),
           ],
         ));
@@ -173,6 +185,14 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
   @override
   void initState() {
     super.initState();
+    // _dddd();
+    builder
+      ..nodeSeparation = (60)
+      ..levelSeparation = (60)
+      ..orientation = SugiyamaConfiguration.ORIENTATION_TOP_BOTTOM;
+  }
+
+  void _dddd() {
     final node1 = Node.Id(1);
     final node2 = Node.Id(2);
     final node3 = Node.Id(3);
@@ -233,7 +253,7 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
     // graph.addEdge(node22, node23);
     // graph.addEdge(node1, node22);
     // graph.addEdge(node7, node8);
-
+    //
     // graph.addEdge(node1, node2);
     // graph.addEdge(node2, node3);
     // graph.addEdge(node2, node4);
@@ -244,24 +264,24 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
     // graph.addEdge(node7, node5);
     // graph.addEdge(node7, node6);
 
-    graph.addEdge(node1, node2, paint: Paint()..color = Colors.red);
-    graph.addEdge(node2, node3, paint: Paint()..color = Colors.red);
-    graph.addEdge(node2, node5, paint: Paint()..color = Colors.red);
-    graph.addEdge(node2, node6, paint: Paint()..color = Colors.red);
-    graph.addEdge(node2, node7, paint: Paint()..color = Colors.red);
+    graph.addEdge(node1, node2, paint: Paint()..color = Colors.red,dash: true);
+    graph.addEdge(node2, node3, paint: Paint()..color = Colors.red,dash: true);
+    graph.addEdge(node2, node5, paint: Paint()..color = Colors.red,dash: true);
+    graph.addEdge(node2, node6, paint: Paint()..color = Colors.red,dash: true);
+    graph.addEdge(node2, node7, paint: Paint()..color = Colors.red,dash: true);
     // graph.addEdge(node3, node4);
     // graph.addEdge(node4, node5);
     // graph.addEdge(node4, node6);
     // graph.addEdge(node4, node7);
 
-    graph.addEdge(node3, node4, showArrow: false);
-    graph.addEdge(node5, node4, showArrow: false);
-    graph.addEdge(node6, node4, showArrow: false);
-    graph.addEdge(node7, node4, showArrow: false);
+    graph.addEdge(node3, node4, showArrow: false,dash: true);
+    graph.addEdge(node5, node4, showArrow: false,dash: true);
+    graph.addEdge(node6, node4, showArrow: false,dash: true);
+    graph.addEdge(node7, node4, showArrow: false,dash: true);
 
-    builder
-      ..nodeSeparation = (60)
-      ..levelSeparation = (60)
-      ..orientation = SugiyamaConfiguration.ORIENTATION_TOP_BOTTOM;
+    // builder
+    //   ..nodeSeparation = (60)
+    //   ..levelSeparation = (60)
+    //   ..orientation = SugiyamaConfiguration.ORIENTATION_TOP_BOTTOM;
   }
 }

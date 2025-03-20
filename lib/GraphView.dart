@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:path_drawing/path_drawing.dart';
 
 part 'Graph.dart';
 
