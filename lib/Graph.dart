@@ -39,8 +39,8 @@ class Graph {
 
   void removeNodes(List<Node> nodes) => nodes.forEach((it) => removeNode(it));
 
-  Edge addEdge(Node source, Node destination, {Paint? paint,bool showArrow = true, bool dash = false}) {
-    final edge = Edge(source, destination, paint: paint,showArrow: showArrow, dash: dash);
+  Edge addEdge(Node source, Node destination, {Paint? paint,bool showArrow = true, bool dash = false, String? arrowTitle = '',Color?arrowTitleColor,int type = 0}) {
+    final edge = Edge(source, destination, paint: paint,showArrow: showArrow, dash: dash, arrowTitle: arrowTitle,arrowTitleColor:arrowTitleColor,type:type);
     addEdgeS(edge);
 
     return edge;
@@ -197,12 +197,14 @@ class Edge {
   Node source;
   Node destination;
   bool showArrow = true;
+  String? arrowTitle = '';
   bool dash = false;
-
+  Color? arrowTitleColor;
+  int type = 0;
   Key? key;
   Paint? paint;
 
-  Edge(this.source, this.destination, {this.key, this.paint,this.showArrow = true,this.dash = false});
+  Edge(this.source, this.destination, {this.key, this.paint,this.showArrow = true,this.dash = false,this.arrowTitle = '',this.arrowTitleColor,this.type = 0});
 
   @override
   bool operator ==(Object? other) => identical(this, other) || other is Edge && hashCode == other.hashCode ;
