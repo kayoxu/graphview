@@ -39,6 +39,8 @@ enum CoordinateAssignment {
   UpRight, // 2
   UpLeft, // 3
   Average, // 4
+  Left,
+  Center
 }
 
 abstract class BendPointShape {}

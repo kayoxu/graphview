@@ -49,7 +49,7 @@ class SugiyamaEdgeRenderer extends ArrowEdgeRenderer {
             path.moveTo((child.x + child.width), child.y + child.height / 2);
             // Draws a line from the child's middle-top halfway up to its parent
             path.lineTo(
-                child.x + child.width * 1.5, child.y + child.height / 2);
+                child.x + child.width , child.y + child.height / 2);
 
             // Draws a line from the previous point to the middle of the parent's width
             path.lineTo(
@@ -57,6 +57,18 @@ class SugiyamaEdgeRenderer extends ArrowEdgeRenderer {
             // Position at the middle of the level separation under the parent
             path.moveTo(
                 node.x + node.width / 2, child.y + child.height / 2);
+            // Draws a line up to the parent's middle-bottom
+            path.lineTo(node.x + node.width / 2, node.y + node.height);
+          } else if(child.x == node.x) {
+            // Position at the middle-top of the child
+            path.moveTo((child.x + child.width / 2), child.y);
+            // Draws a line from the child's middle-top halfway up to its parent
+            path.lineTo(child.x + child.width / 2, child.y - levelSeparationHalf);
+
+            // Draws a line from the previous point to the middle of the parent's width
+            path.lineTo(node.x + node.width / 2, child.y - levelSeparationHalf);
+            // Position at the middle of the level separation under the parent
+            path.moveTo(node.x + node.width / 2, child.y - levelSeparationHalf);
             // Draws a line up to the parent's middle-bottom
             path.lineTo(node.x + node.width / 2, node.y + node.height);
           } else {
